@@ -1,0 +1,37 @@
+<div class="page-sidebar" id="sidebar">
+    <!-- Page Sidebar Header-->
+    <div class="sidebar-header-wrapper">
+        <input class="searchinput" type="text">
+        <i class="searchicon fa fa-search"></i>
+        <div class="searchhelper">Search Reports, Charts, Emails or Notifications</div>
+    </div>
+    <!-- /Page Sidebar Header -->
+    <!-- Sidebar Menu -->
+    <ul class="nav sidebar-menu">
+        <!--Dashboard-->
+        {foreach $auth_info_a as $k=>$v}
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-user"></i>
+                <span class="menu-text">{$v.name}</span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul class="submenu">
+                {foreach $auth_info_b as $vo}
+                {if condition="$vo.pid eq $v.id"}
+                <li>
+                    <a href="<?php echo __MODEL__;?>{$vo.model}/{$vo.action}">
+                                    <span class="menu-text">
+                                        {$vo.name}                                    </span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+                {/if}
+                {/foreach}
+            </ul>
+        </li>
+        {/foreach}
+
+    </ul>
+    <!-- /Sidebar Menu -->
+</div>

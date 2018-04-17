@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>RyBin的个人博客</title>
+
+    <meta name="description" content="RyBin的个人博客，php个人学习博客">
+    <meta name="keywords" content="RyBin的个人博客，php学习博客">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="<?php echo __ADMIN__;?>/style/bootstrap.css" rel="stylesheet">
+    <link href="<?php echo __ADMIN__;?>/style/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo __ADMIN__;?>/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="<?php echo __ADMIN__;?>/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo __ADMIN__;?>/style/demo.css" rel="stylesheet">
+    <link href="<?php echo __ADMIN__;?>/style/typicons.css" rel="stylesheet">
+    <link href="<?php echo __ADMIN__;?>/style/animate.css" rel="stylesheet">
+    
+</head>
+<body>
+	<!-- 头部-->
+    {include file="common/top"}
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="#">系统</a>
+                    </li>
+                                        <li class="active">权限管理</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<button type="button" tooltip="添加权限" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url("auth/add")}'"> <i class="fa fa-plus"></i> Add
+</button>
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">权限名称</th>
+                                <th class="text-center">父id</th>
+                                <th class="text-center">控制器</th>
+                                <th class="text-center">操作方法</th>
+                                <th class="text-center">全路径</th>
+                                <th class="text-center">等级</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                {volist name="info" id="v"}
+                                <tr>
+                                    <td align="center">{$v.id}</td>
+                                    <td align="center">{if condition="$v.level eq 0"}{$v.name}{elseif condition="$v.level eq 1"}--/{$v.name}
+                                        {else /}--/--/{$v.name}{/if}
+                                    </td>
+                                    <td align="center">{$v.pid}</td>
+                                    <td align="center">{$v.model}</td>
+                                    <td align="center">{$v.action}</td>
+                                    <td align="center">{$v.path}</td>
+                                    <td align="center">{$v.level}</td>
+                                <td align="center">
+                                    <a href="{:url('auth/edit',array('id'=>$v['id']))}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a href="#" onClick="warning('确实要删除吗','{:url('auth/delete',array('id'=>$v['id']))}' )" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a>
+
+                                </td>
+                            </tr>
+                                {/volist}
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align:right; margin-top:10px;">
+                    {$info->render()}
+                	                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="<?php echo __ADMIN__;?>/style/jquery_002.js"></script>
+    <script src="<?php echo __ADMIN__;?>/style/bootstrap.js"></script>
+    <script src="<?php echo __ADMIN__;?>/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="<?php echo __ADMIN__;?>/style/beyond.js"></script>
+    
+
+
+</body></html>
