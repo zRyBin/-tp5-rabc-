@@ -1,129 +1,319 @@
-ThinkPHP 5.0
-===============
+基于tp5的rabc博客后台系统
+是一套基于国内流行的php框架thinkphp5的基础上，加上rabc的权限编写而成，
+适合个人博客系统的搭建，数据库如下：
+-- phpMyAdmin SQL Dump
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: 2018-04-17 03:58:01
+-- 服务器版本： 5.7.14
+-- PHP Version: 7.0.10
 
-[![Total Downloads](https://poser.pugx.org/topthink/think/downloads)](https://packagist.org/packages/topthink/think)
-[![Latest Stable Version](https://poser.pugx.org/topthink/think/v/stable)](https://packagist.org/packages/topthink/think)
-[![Latest Unstable Version](https://poser.pugx.org/topthink/think/v/unstable)](https://packagist.org/packages/topthink/think)
-[![License](https://poser.pugx.org/topthink/think/license)](https://packagist.org/packages/topthink/think)
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
-ThinkPHP5在保持快速开发和大道至简的核心理念不变的同时，PHP版本要求提升到5.4，对已有的CBD模式做了更深的强化，优化核心，减少依赖，基于全新的架构思想和命名空间实现，是ThinkPHP突破原有框架思路的颠覆之作，其主要特性包括：
 
- + 基于命名空间和众多PHP新特性
- + 核心功能组件化
- + 强化路由功能
- + 更灵活的控制器
- + 重构的模型和数据库类
- + 配置文件可分离
- + 重写的自动验证和完成
- + 简化扩展机制
- + API支持完善
- + 改进的Log类
- + 命令行访问支持
- + REST支持
- + 引导文件支持
- + 方便的自动生成定义
- + 真正惰性加载
- + 分布式环境支持
- + 更多的社交类库
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-> ThinkPHP5的运行环境要求PHP5.4以上。
+--
+-- Database: `blog`
+--
 
-详细开发文档参考 [ThinkPHP5完全开发手册](http://www.kancloud.cn/manual/thinkphp5)
+-- --------------------------------------------------------
 
-## 目录结构
+--
+-- 表的结构 `tp_admin`
+--
 
-初始的目录结构如下：
+CREATE TABLE `tp_admin` (
+  `id` mediumint(9) NOT NULL,
+  `username` varchar(30) NOT NULL COMMENT '管理员名称',
+  `password` char(32) NOT NULL COMMENT '管理员密码',
+  `create_time` int(10) UNSIGNED NOT NULL COMMENT '创建时间',
+  `update_time` int(10) UNSIGNED NOT NULL COMMENT '修改时间',
+  `role_id` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '角色id',
+  `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '管理员状态：1启用，0禁用',
+  `delete_time` int(11) DEFAULT NULL COMMENT '软删除时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-~~~
-www  WEB部署目录（或者子目录）
-├─application           应用目录
-│  ├─common             公共模块目录（可以更改）
-│  ├─module_name        模块目录
-│  │  ├─config.php      模块配置文件
-│  │  ├─common.php      模块函数文件
-│  │  ├─controller      控制器目录
-│  │  ├─model           模型目录
-│  │  ├─view            视图目录
-│  │  └─ ...            更多类库目录
-│  │
-│  ├─command.php        命令行工具配置文件
-│  ├─common.php         公共函数文件
-│  ├─config.php         公共配置文件
-│  ├─route.php          路由配置文件
-│  ├─tags.php           应用行为扩展定义文件
-│  └─database.php       数据库配置文件
-│
-├─public                WEB目录（对外访问目录）
-│  ├─index.php          入口文件
-│  ├─router.php         快速测试文件
-│  └─.htaccess          用于apache的重写
-│
-├─thinkphp              框架系统目录
-│  ├─lang               语言文件目录
-│  ├─library            框架类库目录
-│  │  ├─think           Think类库包目录
-│  │  └─traits          系统Trait目录
-│  │
-│  ├─tpl                系统模板目录
-│  ├─base.php           基础定义文件
-│  ├─console.php        控制台入口文件
-│  ├─convention.php     框架惯例配置文件
-│  ├─helper.php         助手函数文件
-│  ├─phpunit.xml        phpunit配置文件
-│  └─start.php          框架入口文件
-│
-├─extend                扩展类库目录
-├─runtime               应用的运行时目录（可写，可定制）
-├─vendor                第三方类库目录（Composer依赖库）
-├─build.php             自动生成定义文件（参考）
-├─composer.json         composer 定义文件
-├─LICENSE.txt           授权说明文件
-├─README.md             README 文件
-├─think                 命令行入口文件
-~~~
+--
+-- 转存表中的数据 `tp_admin`
+--
 
-> router.php用于php自带webserver支持，可用于快速测试
-> 切换到public目录后，启动命令：php -S localhost:8888  router.php
-> 上面的目录结构和名称是可以改变的，这取决于你的入口文件和配置参数。
+INSERT INTO `tp_admin` (`id`, `username`, `password`, `create_time`, `update_time`, `role_id`, `status`, `delete_time`) VALUES
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 0, 1, NULL),
+(2, 'rybin', 'e10adc3949ba59abbe56e057f20f883e', 1541300502, 1541300502, 1, 1, NULL),
+(23, 'test', 'e10adc3949ba59abbe56e057f20f883e', 1523516119, 1523516494, 1, 0, NULL),
+(24, 'test1', 'e10adc3949ba59abbe56e057f20f883e', 1523517157, 1523933900, 1, 1, 1523933900);
 
-## 命名规范
+-- --------------------------------------------------------
 
-`ThinkPHP5`遵循PSR-2命名规范和PSR-4自动加载规范，并且注意如下规范：
+--
+-- 表的结构 `tp_article`
+--
 
-### 目录和文件
+CREATE TABLE `tp_article` (
+  `id` mediumint(9) NOT NULL COMMENT '文章id',
+  `title` varchar(60) NOT NULL COMMENT '文章标题',
+  `author` varchar(30) NOT NULL COMMENT '文章作者',
+  `desc` varchar(255) NOT NULL COMMENT '文章简介',
+  `keywords` varchar(255) NOT NULL COMMENT '文章关键词',
+  `content` text NOT NULL COMMENT '文章内容',
+  `pic` varchar(100) NOT NULL COMMENT '缩略图',
+  `click` int(10) NOT NULL DEFAULT '0' COMMENT '点击数',
+  `state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:不推荐 1：推荐',
+  `cateid` mediumint(9) NOT NULL COMMENT '所属栏目',
+  `delete_time` int(11) DEFAULT NULL COMMENT '删除时间',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(11) DEFAULT NULL COMMENT '修改时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-*   目录不强制规范，驼峰和小写+下划线模式均支持；
-*   类库、函数文件统一以`.php`为后缀；
-*   类的文件名均以命名空间定义，并且命名空间的路径和类库文件所在路径一致；
-*   类名和类文件名保持一致，统一采用驼峰法命名（首字母大写）；
+--
+-- 转存表中的数据 `tp_article`
+--
 
-### 函数和类、属性命名
-*   类的命名采用驼峰法，并且首字母大写，例如 `User`、`UserType`，默认不需要添加后缀，例如`UserController`应该直接命名为`User`；
-*   函数的命名使用小写字母和下划线（小写字母开头）的方式，例如 `get_client_ip`；
-*   方法的命名使用驼峰法，并且首字母小写，例如 `getUserName`；
-*   属性的命名使用驼峰法，并且首字母小写，例如 `tableName`、`instance`；
-*   以双下划线“__”打头的函数或方法作为魔法方法，例如 `__call` 和 `__autoload`；
+INSERT INTO `tp_article` (`id`, `title`, `author`, `desc`, `keywords`, `content`, `pic`, `click`, `state`, `cateid`, `delete_time`, `create_time`, `update_time`) VALUES
+(9, 'test', 'test', 'test', 'test', 'test', '/uploads/20180412\\e3ab4c9f96b6a07cd039c72953ed7cf6.jpg', 0, 1, 2, 1523518302, NULL, 1523518302),
+(10, '测试', '测试', '测试', '测试', '测的', '/uploads/20180412\\2974ab41a041603717268d6927c918a9.jpg', 0, 1, 1, NULL, 1523520932, 1523520932);
 
-### 常量和配置
-*   常量以大写字母和下划线命名，例如 `APP_PATH`和 `THINK_PATH`；
-*   配置参数以小写字母和下划线命名，例如 `url_route_on` 和`url_convert`；
+-- --------------------------------------------------------
 
-### 数据表和字段
-*   数据表和字段采用小写加下划线方式命名，并注意字段名不要以下划线开头，例如 `think_user` 表和 `user_name`字段，不建议使用驼峰和中文作为数据表字段命名。
+--
+-- 表的结构 `tp_auth`
+--
 
-## 参与开发
-请参阅 [ThinkPHP5 核心框架包](https://github.com/top-think/framework)。
+CREATE TABLE `tp_auth` (
+  `id` smallint(6) UNSIGNED NOT NULL COMMENT '权限id',
+  `name` varchar(20) CHARACTER SET utf8 NOT NULL COMMENT '权限名称',
+  `pid` smallint(6) UNSIGNED NOT NULL COMMENT '父id',
+  `model` varchar(32) CHARACTER SET utf8 NOT NULL COMMENT '模块',
+  `action` varchar(32) CHARACTER SET utf8 NOT NULL COMMENT '操作方法',
+  `path` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '全路径',
+  `level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '级别',
+  `delete_time` int(11) DEFAULT NULL COMMENT '删除时间',
+  `create_time` int(11) DEFAULT NULL,
+  `update_time` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
-## 版权信息
+--
+-- 转存表中的数据 `tp_auth`
+--
 
-ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
+INSERT INTO `tp_auth` (`id`, `name`, `pid`, `model`, `action`, `path`, `level`, `delete_time`, `create_time`, `update_time`) VALUES
+(1, '管理员管理', 0, '‘’', '‘’', '1', 0, NULL, NULL, 1523932712),
+(2, '分类管理', 0, '‘’', '‘’', '2', 0, NULL, NULL, NULL),
+(3, '文章管理', 0, '‘’', '‘’', '3', 0, NULL, NULL, 1523932873),
+(4, '链接管理', 0, '‘’', '‘’', '4', 0, NULL, NULL, 1523933849),
+(5, '标签管理', 0, '‘’', '‘’', '5', 0, NULL, NULL, NULL),
+(6, '管理员列表', 1, 'admin', 'lst', '1-6', 1, NULL, NULL, NULL),
+(7, '添加管理员', 1, 'admin', 'add', '1-7', 1, NULL, NULL, NULL),
+(9, '分类列表', 2, 'cate', 'lst', '2-9', 1, NULL, NULL, NULL),
+(10, '分类添加', 2, 'cate', 'add', '2-10', 1, NULL, NULL, NULL),
+(12, '文章列表', 3, 'article', 'lst', '3-12', 1, NULL, NULL, NULL),
+(13, '文章添加', 3, 'article', 'add', '3-13', 1, NULL, NULL, NULL),
+(15, '链接列表', 4, 'links', 'lst', '4-15', 1, NULL, NULL, NULL),
+(16, '链接添加', 4, 'links', 'add', '4-16', 1, NULL, NULL, NULL),
+(18, '标签列表', 5, 'tags', 'lst', '5-18', 1, NULL, NULL, NULL),
+(19, '标签添加', 5, 'tags', 'add', '5-19', 1, NULL, NULL, NULL),
+(21, '角色管理', 0, '\'\'', '\'\'', '21', 0, NULL, NULL, NULL),
+(22, '角色列表', 21, 'role', 'lst', '21-22', 1, NULL, NULL, NULL),
+(23, '角色添加', 21, 'role', 'add', '21-23', 1, NULL, NULL, NULL),
+(34, '权限管理', 0, '‘’', '‘’', '34', 0, NULL, NULL, 1523866199),
+(35, '权限添加', 34, 'auth', 'add', '34-35', 1, NULL, NULL, 1523866247),
+(36, '权限列表', 34, 'auth', 'lst', '34-36', 1, NULL, NULL, 1523866304),
+(37, '测试专用11111', 1, '‘’', '‘’', '1-37', 1, 1523932601, 1523932224, 1523932601);
 
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
+-- --------------------------------------------------------
 
-版权所有Copyright © 2006-2018 by ThinkPHP (http://thinkphp.cn)
+--
+-- 表的结构 `tp_cate`
+--
 
-All rights reserved。
+CREATE TABLE `tp_cate` (
+  `id` mediumint(9) NOT NULL COMMENT '栏目id',
+  `catename` varchar(30) NOT NULL COMMENT '栏目名称',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(11) DEFAULT NULL COMMENT '修改时间',
+  `delete_time` int(11) DEFAULT NULL COMMENT '删除时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
+--
+-- 转存表中的数据 `tp_cate`
+--
 
-更多细节参阅 [LICENSE.txt](LICENSE.txt)
+INSERT INTO `tp_cate` (`id`, `catename`, `create_time`, `update_time`, `delete_time`) VALUES
+(1, '网站模板1', NULL, 1523520556, NULL),
+(2, '个人日记', NULL, 1523517679, 1523517679),
+(3, 'php技术', NULL, NULL, NULL),
+(4, '关于RyBin', NULL, 1523930239, 1523930239),
+(6, '留言版', NULL, 1523517690, 1523517690),
+(12, '测试', 1523520581, 1523520581, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tp_links`
+--
+
+CREATE TABLE `tp_links` (
+  `id` mediumint(9) NOT NULL COMMENT '链接id',
+  `title` varchar(30) NOT NULL COMMENT '链接标题',
+  `url` varchar(60) NOT NULL COMMENT '链接地址',
+  `desc` varchar(255) NOT NULL COMMENT '链接说明',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(11) DEFAULT NULL COMMENT '修改时间',
+  `delete_time` int(11) DEFAULT NULL COMMENT '删除时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `tp_links`
+--
+
+INSERT INTO `tp_links` (`id`, `title`, `url`, `desc`, `create_time`, `update_time`, `delete_time`) VALUES
+(1, '百度', 'http://www.baidu.com', '', NULL, 1523519532, 1523519532),
+(4, '测试1', 'www.ceshi.com', '测试', 1523519782, 1523520156, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tp_role`
+--
+
+CREATE TABLE `tp_role` (
+  `id` smallint(6) UNSIGNED NOT NULL COMMENT '角色id',
+  `name` varchar(20) CHARACTER SET utf8 NOT NULL COMMENT '角色名称',
+  `auth_ids` varchar(128) CHARACTER SET utf8 DEFAULT NULL COMMENT '权限ids',
+  `auth_am` text CHARACTER SET utf8 COMMENT '模块操作',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(11) DEFAULT NULL COMMENT '修改时间',
+  `delete_time` int(11) DEFAULT NULL COMMENT '删除时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+-- 转存表中的数据 `tp_role`
+--
+
+INSERT INTO `tp_role` (`id`, `name`, `auth_ids`, `auth_am`, `create_time`, `update_time`, `delete_time`) VALUES
+(1, '测试角色1', '1,6,2,9,3,12', '‘’-‘’,‘’-‘’,‘’-‘’,admin-lst,cate-lst,article-lst', NULL, 1523929721, NULL),
+(3, '测试管理', '2,9,10,3,12,13', '‘’-‘’,‘’-‘’,cate-lst,cate-add,article-lst,article-add', 1523870192, 1523929740, NULL),
+(4, '删除专用', NULL, NULL, 1523930064, 1523930149, 1523930149),
+(5, '在测试', NULL, NULL, 1523930210, 1523930217, 1523930217);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tp_tags`
+--
+
+CREATE TABLE `tp_tags` (
+  `id` mediumint(9) NOT NULL COMMENT 'tag标签id',
+  `tagname` varchar(30) NOT NULL COMMENT 'tag标签名称',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(11) DEFAULT NULL COMMENT '修改时间',
+  `delete_time` int(11) DEFAULT NULL COMMENT '删除时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `tp_tags`
+--
+
+INSERT INTO `tp_tags` (`id`, `tagname`, `create_time`, `update_time`, `delete_time`) VALUES
+(1, '日记', NULL, NULL, NULL),
+(2, 'php', NULL, NULL, NULL),
+(4, '趣闻', NULL, 1523521277, 1523521277);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tp_admin`
+--
+ALTER TABLE `tp_admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tp_article`
+--
+ALTER TABLE `tp_article`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tp_auth`
+--
+ALTER TABLE `tp_auth`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tp_cate`
+--
+ALTER TABLE `tp_cate`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tp_links`
+--
+ALTER TABLE `tp_links`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tp_role`
+--
+ALTER TABLE `tp_role`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tp_tags`
+--
+ALTER TABLE `tp_tags`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 在导出的表使用AUTO_INCREMENT
+--
+
+--
+-- 使用表AUTO_INCREMENT `tp_admin`
+--
+ALTER TABLE `tp_admin`
+  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+--
+-- 使用表AUTO_INCREMENT `tp_article`
+--
+ALTER TABLE `tp_article`
+  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT COMMENT '文章id', AUTO_INCREMENT=11;
+--
+-- 使用表AUTO_INCREMENT `tp_auth`
+--
+ALTER TABLE `tp_auth`
+  MODIFY `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '权限id', AUTO_INCREMENT=38;
+--
+-- 使用表AUTO_INCREMENT `tp_cate`
+--
+ALTER TABLE `tp_cate`
+  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT COMMENT '栏目id', AUTO_INCREMENT=13;
+--
+-- 使用表AUTO_INCREMENT `tp_links`
+--
+ALTER TABLE `tp_links`
+  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT COMMENT '链接id', AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `tp_role`
+--
+ALTER TABLE `tp_role`
+  MODIFY `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '角色id', AUTO_INCREMENT=6;
+--
+-- 使用表AUTO_INCREMENT `tp_tags`
+--
+ALTER TABLE `tp_tags`
+  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT COMMENT 'tag标签id', AUTO_INCREMENT=6;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+，数据库的文件已保存在项目中。
+该项目的入口文件放在跟目录下，理由虚拟服务器的搭建。
+该系统灵活，可以根据自己喜好，添加各种功能。
